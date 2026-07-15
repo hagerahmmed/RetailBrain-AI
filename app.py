@@ -238,3 +238,34 @@ st.markdown("---")
 st.caption(
 "RetailBrain AI | Smart Retail Shelf Monitoring using YOLOv8 and Faster R-CNN"
 )
+
+
+st.markdown("---")
+
+st.header("About RetailBrain AI")
+
+st.write("""
+
+RetailBrain AI is a Deep Learning system designed for smart retail shelf monitoring.
+
+Main Features
+
+• Product Detection
+
+• Product Counting
+
+• Shelf Occupancy Analysis
+
+• Restocking Recommendation
+
+Models Used
+
+• YOLOv8 Nano
+
+• Faster R-CNN
+
+Dataset
+
+• SKU110K
+
+""")
