@@ -216,3 +216,38 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ==========================
+# RetailBrain AI
+# ==========================
+
+# YOLO Outputs
+runs/
+
+# Datasets
+datasets/
+data/
+*.zip
+
+# Trained Models (لو الموديل كبير)
+*.pt
+*.pth
+
+# Colab
+content/
+
+# Kaggle
+working/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Mac
+.DS_Store
+
+# Logs
+logs/
+*.log
