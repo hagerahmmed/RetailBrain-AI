@@ -1,6 +1,7 @@
 import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.express as px
+
+from utils.comparison import load_results
 
 # ==========================================
 # Page Configuration
@@ -16,45 +17,23 @@ st.set_page_config(
 # Header
 # ==========================================
 
-st.title("AI Model Comparison")
+st.title("Model Comparison")
 
-st.markdown("""
-Compare the performance of different object detection models.
-""")
+st.write(
+    "Compare the performance of different object detection models used in RetailBrainAI."
+)
 
 st.divider()
 
 # ==========================================
-# Model Results
+# Load Results
 # ==========================================
 
-comparison = pd.DataFrame({
+comparison = load_results()
 
-    "Model":[
-        "YOLOv8 Nano",
-        "YOLOv8 Small",
-        "Faster R-CNN"
-    ],
-
-    "mAP50":[
-        0.78,
-        0.84,
-        0.81
-    ],
-
-    "Inference Time (sec)":[
-        0.021,
-        0.038,
-        0.120
-    ],
-
-    "Parameters (M)":[
-        3.2,
-        11.2,
-        41.8
-    ]
-
-})
+# ==========================================
+# Results Table
+# ==========================================
 
 st.subheader("Performance Comparison")
 
@@ -67,40 +46,80 @@ st.dataframe(
 st.divider()
 
 # ==========================================
-# Accuracy Chart
+# mAP50 Chart
 # ==========================================
 
 st.subheader("mAP50 Comparison")
 
-fig, ax = plt.subplots(figsize=(7,4))
-
-ax.bar(
-    comparison["Model"],
-    comparison["mAP50"]
+fig1 = px.bar(
+    comparison,
+    x="Model",
+    y="mAP50",
+    text="mAP50",
+    title="Model Accuracy"
 )
 
-ax.set_ylabel("mAP50")
-
-st.pyplot(fig)
-
-st.divider()
+st.plotly_chart(
+    fig1,
+    use_container_width=True
+)
 
 # ==========================================
-# Speed Chart
+# Precision Chart
+# ==========================================
+
+st.subheader("Precision Comparison")
+
+fig2 = px.bar(
+    comparison,
+    x="Model",
+    y="Precision",
+    text="Precision",
+    title="Precision"
+)
+
+st.plotly_chart(
+    fig2,
+    use_container_width=True
+)
+
+# ==========================================
+# Recall Chart
+# ==========================================
+
+st.subheader("Recall Comparison")
+
+fig3 = px.bar(
+    comparison,
+    x="Model",
+    y="Recall",
+    text="Recall",
+    title="Recall"
+)
+
+st.plotly_chart(
+    fig3,
+    use_container_width=True
+)
+
+# ==========================================
+# Inference Time
 # ==========================================
 
 st.subheader("Inference Time")
 
-fig2, ax2 = plt.subplots(figsize=(7,4))
-
-ax2.bar(
-    comparison["Model"],
-    comparison["Inference Time (sec)"]
+fig4 = px.bar(
+    comparison,
+    x="Model",
+    y="Inference Time",
+    text="Inference Time",
+    title="Inference Time (Seconds)"
 )
 
-ax2.set_ylabel("Seconds")
-
-st.pyplot(fig2)
+st.plotly_chart(
+    fig4,
+    use_container_width=True
+)
 
 st.divider()
 
@@ -108,11 +127,36 @@ st.divider()
 # Best Model
 # ==========================================
 
-best = comparison.loc[
+best_model = comparison.loc[
     comparison["mAP50"].idxmax()
 ]
 
 st.success(
-    f" Best Model: {best['Model']} "
-    f"(mAP50 = {best['mAP50']})"
+    f"""
+Best Performing Model
+
+Model: {best_model['Model']}
+
+mAP50: {best_model['mAP50']}
+
+Precision: {best_model['Precision']}
+
+Recall: {best_model['Recall']}
+"""
+)
+
+st.divider()
+
+# ==========================================
+# Download Results
+# ==========================================
+
+csv = comparison.to_csv(index=False)
+
+st.download_button(
+    label="Download Comparison Results",
+    data=csv,
+    file_name="Model_Comparison.csv",
+    mime="text/csv",
+    use_container_width=True
 )
