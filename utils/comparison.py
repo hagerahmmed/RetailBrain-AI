@@ -1,61 +1,45 @@
 
+"""
+Model Comparison Utilities
+"""
+
 import pandas as pd
 
 
-def load_results():
+def compare_models():
 
-    data = {
+    comparison = pd.DataFrame({
 
-        "Model": [
+        "Metric": [
 
-            "YOLOv8 Nano",
-
-            "YOLOv8 Small",
-
-            "Faster R-CNN"
-
-        ],
-
-        "mAP50": [
-
-            0.78,
-
-            0.84,
-
-            0.81
+            "Model",
+            "mAP@50",
+            "Precision",
+            "Recall",
+            "Inference Time (ms)"
 
         ],
 
-        "Precision": [
+        "YOLOv8": [
 
-            0.88,
-
-            0.91,
-
-            0.89
-
-        ],
-
-        "Recall": [
-
+            "YOLOv8n",
             0.82,
-
-            0.87,
-
-            0.85
+            0.84,
+            0.80,
+            18
 
         ],
 
-        "Inference Time": [
+        "Faster R-CNN": [
 
-            0.021,
-
-            0.037,
-
-            0.120
+            "Faster R-CNN",
+            0.79,
+            0.81,
+            0.77,
+            65
 
         ]
 
-    }
+    })
 
-    return pd.DataFrame(data)
+    return comparison
