@@ -1,68 +1,72 @@
 import streamlit as st
 
-# --------------------------------------------------
-# Page Configuration
-# --------------------------------------------------
+# ==========================================
+# Page Config
+# ==========================================
 
 st.set_page_config(
-    page_title="RetailBrain AI",
+    page_title="RetailBrainAI",
     page_icon="🛒",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="wide"
 )
 
-# --------------------------------------------------
-# Header
-# --------------------------------------------------
+# ==========================================
+# Hero Section
+# ==========================================
 
-st.title("🛒 RetailBrain AI")
+st.title("RetailBrainAI")
 
-st.subheader("AI-Powered Smart Retail Shelf Monitoring System")
-
-st.markdown("---")
-
-# --------------------------------------------------
-# Project Description
-# --------------------------------------------------
+st.subheader("AI-Powered Retail Shelf Monitoring System")
 
 st.markdown("""
-Welcome to **RetailBrain AI**, an intelligent retail analytics platform powered by Computer Vision and Deep Learning.
 
-This system enables retailers to:
+Welcome to **RetailBrainAI**, an intelligent computer vision platform for retail shelf monitoring.
 
-- 📦 Detect products automatically.
-- 📊 Analyze shelf occupancy.
-- 📈 Monitor product density.
-- 🤖 Generate smart retail insights.
-- 💡 Support inventory management.
+This system uses **YOLOv8** and **Deep Learning** to:
+
+- Detect Products
+- Analyze Shelf Inventory
+- Compare AI Models
+- Generate Smart Recommendations
+
 """)
 
-st.markdown("---")
+st.divider()
 
-# --------------------------------------------------
-# Dashboard Metrics
-# --------------------------------------------------
+# ==========================================
+# Features
+# ==========================================
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2 = st.columns(2)
 
 with col1:
-    st.metric("Model", "YOLOv8")
+
+    st.info("""
+### Product Detection
+
+Detect products on retail shelves using YOLOv8.
+""")
+
+    st.info("""
+### Retail Analytics
+
+Generate real-time analytics from detection results.
+""")
 
 with col2:
-    st.metric("Dataset", "SKU-110K")
 
-with col3:
-    st.metric("Framework", "Streamlit")
+    st.info("""
+### Model Comparison
 
-with col4:
-    st.metric("Status", "Ready")
+Compare YOLOv8 Nano, Small, and Faster R-CNN.
+""")
 
-st.markdown("---")
+    st.info("""
+### Recommendation System
 
-# --------------------------------------------------
-# Quick Start
-# --------------------------------------------------
+Receive AI-powered inventory recommendations.
+""")
 
-st.info("👈 Use the sidebar to navigate through the project pages.")
+st.divider()
 
-st.success("RetailBrain AI is ready to use.")
+st.success("Use the left sidebar to navigate through the application.")
