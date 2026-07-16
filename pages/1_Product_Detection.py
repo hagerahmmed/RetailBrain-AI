@@ -21,7 +21,7 @@ st.set_page_config(
 # Load YOLO Model
 # ==========================================
 
-model = load_model()
+model = None
 
 # ==========================================
 # Header
