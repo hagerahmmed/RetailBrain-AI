@@ -14,21 +14,21 @@ st.set_page_config(
 # Header
 # ==========================================
 
-st.title("Smart Retail Recommendation System")
+st.title("Recommendation System")
 
-st.markdown("""
-AI-powered recommendations based on the object detection results.
-""")
+st.write(
+    "AI-powered recommendations based on retail shelf analysis."
+)
 
 st.divider()
 
 # ==========================================
-# Check Detection Results
+# Check Session
 # ==========================================
 
 if "statistics" not in st.session_state:
 
-    st.warning("⚠ Please run Product Detection first.")
+    st.warning("Please run Product Detection first.")
 
     st.stop()
 
@@ -39,73 +39,147 @@ products = statistics["products"]
 confidence = statistics["avg_confidence"]
 
 # ==========================================
-# Shelf Status
+# KPI Cards
 # ==========================================
 
-st.subheader("Shelf Status")
+col1, col2 = st.columns(2)
 
-if products < 80:
+with col1:
 
-    st.error("Shelf inventory is LOW.")
+    st.metric(
+        "Detected Products",
+        products
+    )
 
-    st.write("Recommendation: Restock the shelf immediately.")
+with col2:
 
-elif products < 150:
-
-    st.warning("Shelf inventory is MODERATE.")
-
-    st.write("Recommendation: Monitor inventory regularly.")
-
-else:
-
-    st.success("Shelf inventory is GOOD.")
-
-    st.write("Recommendation: No action required.")
+    st.metric(
+        "Average Confidence",
+        f"{confidence:.2f}"
+    )
 
 st.divider()
 
 # ==========================================
-# Confidence Status
+# Inventory Status
+# ==========================================
+
+st.subheader("Inventory Status")
+
+if products < 80:
+
+    inventory = "Low"
+
+    priority = "High"
+
+    recommendation = (
+        "Restock the shelf immediately."
+    )
+
+elif products < 150:
+
+    inventory = "Medium"
+
+    priority = "Medium"
+
+    recommendation = (
+        "Monitor shelf inventory regularly."
+    )
+
+else:
+
+    inventory = "High"
+
+    priority = "Low"
+
+    recommendation = (
+        "Inventory level is healthy."
+    )
+
+st.write(f"**Inventory Level:** {inventory}")
+
+st.write(f"**Priority:** {priority}")
+
+st.info(recommendation)
+
+st.divider()
+
+# ==========================================
+# Detection Quality
 # ==========================================
 
 st.subheader("Detection Quality")
 
-if confidence < 0.60:
+if confidence >= 0.90:
 
-    st.error("Low confidence detected.")
+    quality = "Excellent"
 
-    st.write("Recommendation: Capture another image with better lighting.")
+elif confidence >= 0.80:
 
-elif confidence < 0.85:
+    quality = "Good"
 
-    st.warning("Medium confidence.")
+elif confidence >= 0.60:
 
-    st.write("Recommendation: Review the prediction manually.")
+    quality = "Acceptable"
 
 else:
 
-    st.success("High confidence.")
+    quality = "Poor"
 
-    st.write("Recommendation: Detection results are reliable.")
+st.write(f"**Quality:** {quality}")
+
+if quality == "Poor":
+
+    st.error(
+        "Capture another image with better lighting."
+    )
+
+elif quality == "Acceptable":
+
+    st.warning(
+        "Review the detection results manually."
+    )
+
+else:
+
+    st.success(
+        "Detection quality is reliable."
+    )
 
 st.divider()
 
 # ==========================================
-# Final Recommendation
+# Final Decision
 # ==========================================
 
-st.subheader("Final Decision")
+st.subheader("Final AI Decision")
 
-if products < 80:
+if inventory == "Low":
 
     decision = "Restock Required"
 
-elif confidence < 0.60:
+elif quality == "Poor":
 
-    decision = "Retake Shelf Image"
+    decision = "Capture New Shelf Image"
 
 else:
 
     decision = "Shelf Status is Healthy"
 
-st.info(f"AI Decision: {decision}")
+st.success(decision)
+
+st.divider()
+
+# ==========================================
+# Summary
+# ==========================================
+
+st.subheader("Summary")
+
+st.write(f"- Inventory Status: {inventory}")
+
+st.write(f"- Detection Quality: {quality}")
+
+st.write(f"- Priority Level: {priority}")
+
+st.write(f"- Final Decision: {decision}")
