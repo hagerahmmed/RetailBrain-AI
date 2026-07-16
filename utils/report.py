@@ -1,30 +1,70 @@
-"""
-Report Utilities
-"""
-
-import pandas as pd
+from reportlab.platypus import SimpleDocTemplate
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 
 
-def create_report(statistics):
+def generate_report(
+    filename,
+    products,
+    confidence,
+    inventory,
+    quality,
+    decision
+):
 
-    report = pd.DataFrame({
+    doc = SimpleDocTemplate(filename)
 
-        "Metric":[
+    styles = getSampleStyleSheet()
 
-            "Total Products",
+    elements = []
 
-            "Average Confidence"
+    elements.append(
+        Paragraph(
+            "<b>RetailBrainAI Report</b>",
+            styles["Title"]
+        )
+    )
 
-        ],
+    elements.append(
+        Paragraph(
+            "<br/>",
+            styles["Normal"]
+        )
+    )
 
-        "Value":[
+    elements.append(
+        Paragraph(
+            f"Detected Products: {products}",
+            styles["BodyText"]
+        )
+    )
 
-            statistics["products"],
+    elements.append(
+        Paragraph(
+            f"Average Confidence: {confidence:.2f}",
+            styles["BodyText"]
+        )
+    )
 
-            round(statistics["avg_confidence"],3)
+    elements.append(
+        Paragraph(
+            f"Inventory Status: {inventory}",
+            styles["BodyText"]
+        )
+    )
 
-        ]
+    elements.append(
+        Paragraph(
+            f"Detection Quality: {quality}",
+            styles["BodyText"]
+        )
+    )
 
-    })
+    elements.append(
+        Paragraph(
+            f"Final Decision: {decision}",
+            styles["BodyText"]
+        )
+    )
 
-    return report
+    doc.build(elements)
