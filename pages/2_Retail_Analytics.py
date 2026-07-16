@@ -1,64 +1,109 @@
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # ==========================================
 # Page Configuration
 # ==========================================
 
 st.set_page_config(
+
     page_title="Retail Analytics",
+
     page_icon="📊",
+
     layout="wide"
+
 )
 
 # ==========================================
 # Header
 # ==========================================
 
-st.title("📊 Retail Analytics")
+st.title("Retail Analytics Dashboard")
 
 st.markdown("""
-This dashboard provides AI-powered analytics for retail shelf monitoring.
-The displayed values will be updated automatically after running product detection.
+
+AI-powered analytics for retail shelf monitoring.
+
 """)
 
 st.divider()
+
+# ==========================================
+# Session Check
+# ==========================================
+
+if "statistics" not in st.session_state:
+
+    st.warning("⚠ Please run Product Detection first.")
+
+    st.stop()
+
+statistics = st.session_state.statistics
 
 # ==========================================
 # Metrics
 # ==========================================
 
-col1, col2, col3, col4 = st.columns(4)
+c1,c2=st.columns(2)
 
-with col1:
-    st.metric("📦 Total Products", "--")
+with c1:
 
-with col2:
-    st.metric("📈 Shelf Occupancy", "--")
+    st.metric(
 
-with col3:
-    st.metric("🎯 Average Confidence", "--")
+        "Products",
 
-with col4:
-    st.metric("⚡ Inference Time", "--")
+        statistics["products"]
+
+    )
+
+with c2:
+
+    st.metric(
+
+        "Avg Confidence",
+
+        f"{statistics['avg_confidence']:.2f}"
+
+    )
 
 st.divider()
 
 # ==========================================
-# Analytics Section
+# Bar Chart
 # ==========================================
 
-st.subheader("Retail Insights")
+st.subheader("Products Summary")
 
-st.info("Retail analytics charts will appear here after running the detection model.")
+fig,ax=plt.subplots(figsize=(5,4))
+
+ax.bar(
+
+    ["Detected Products"],
+
+    [statistics["products"]]
+
+)
+
+st.pyplot(fig)
 
 st.divider()
 
-st.subheader("Future Analytics")
+# ==========================================
+# Confidence Gauge
+# ==========================================
 
-st.markdown("""
-- Product Density
-- Shelf Utilization
-- Confidence Distribution
-- Detection Statistics
-- Inventory Insights
-""")
+st.subheader("Confidence Level")
+
+st.progress(
+
+    float(statistics["avg_confidence"])
+
+)
+
+st.caption(
+
+    f"{statistics['avg_confidence']:.2%}"
+
+)
