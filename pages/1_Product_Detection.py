@@ -1,8 +1,10 @@
 import streamlit as st
 from PIL import Image
-import tempfile
 
 from utils.model import load_model
+from utils.prediction import predict
+from utils.analytics import calculate_statistics
+from utils.visualization import draw_boxes
 
 # --------------------------------------------------
 # Page Configuration
@@ -17,7 +19,7 @@ st.set_page_config(
 # --------------------------------------------------
 # Header
 # --------------------------------------------------
-
+model = load_model()
 st.title("📦 Product Detection")
 
 st.markdown("""
