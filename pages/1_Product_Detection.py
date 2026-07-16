@@ -94,18 +94,30 @@ if uploaded_file is not None:
 
             with st.spinner("Running YOLOv8 Detection..."):
 
-                result, inference_time = run_prediction(
-                    model,
-                    image
-                )
+             result, inference_time = run_prediction(
+    model,
+    image
+)
 
-                detected_image = draw_detection(result)
+detected_image = draw_detection(result)
 
-                statistics = get_statistics(result)
+statistics = get_statistics(result)
 
-                table = detection_table(result)
+table = detection_table(result)
 
-                st.session_state.statistics = statistics
+# Save statistics
+st.session_state.statistics = statistics
+
+# Save detected product names
+detected_products = []
+
+for cls in result.boxes.cls.cpu().numpy():
+
+    detected_products.append(
+        model.names[int(cls)]
+    )
+
+st.session_state.detected_products = detected_products
 
             with col2:
 
