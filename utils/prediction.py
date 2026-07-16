@@ -1,16 +1,12 @@
-
 """
 Prediction Utilities
 """
 
 import tempfile
+import time
 
 
 def run_prediction(model, image):
-
-    """
-    Run YOLO inference on the uploaded image.
-    """
 
     with tempfile.NamedTemporaryFile(
         delete=False,
@@ -18,6 +14,8 @@ def run_prediction(model, image):
     ) as temp:
 
         image.save(temp.name)
+
+        start = time.time()
 
         results = model.predict(
 
@@ -29,4 +27,8 @@ def run_prediction(model, image):
 
         )
 
-    return results[0]
+        end = time.time()
+
+    inference_time = end - start
+
+    return results[0], inference_time
